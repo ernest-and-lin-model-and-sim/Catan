@@ -1,4 +1,68 @@
+globals[dice players p1r p2r p3r p4r]
+patches-own [owner number resource]
 
+
+to setup
+  clear-all
+
+  set p1r [0 0 0 0]
+  set p2r [0 0 0 0]
+  set p3r [0 0 0 0]
+  set p4r [0 0 0 0]
+
+  ask patches [
+    set owner random 5
+    set number (2 + random 6 + random 6)
+    set resource random 4
+  ]
+
+  reset-ticks
+end
+
+to go
+
+  roll-die
+
+  ask patches[
+    reward-player
+  ]
+
+  show p1r
+  show p2r
+  show p3r
+  show p4r
+
+  tick
+end
+
+to roll-die
+	set dice (2 + (random 6) + (random 6))
+  show dice
+end
+
+to reward-player
+  if owner != 0 [
+
+    let pr nobody
+
+    if owner = 1[set pr p1r]
+    if owner = 2[set pr p2r]
+    if owner = 3[set pr p3r]
+    if owner = 4[set pr p4r]
+
+    if dice = number [
+      set pr replace-item resource pr ((item resource pr) + 1)
+    ]
+
+    if owner = 1[set p1r pr]
+    if owner = 2[set p2r pr]
+    if owner = 3[set p3r pr]
+    if owner = 4[set p4r pr]
+
+  ]
+
+
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -26,6 +90,40 @@ GRAPHICS-WINDOW
 1
 ticks
 30.0
+
+BUTTON
+80
+125
+143
+158
+NIL
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+82
+48
+145
+81
+NIL
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
